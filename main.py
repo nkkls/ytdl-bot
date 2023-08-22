@@ -33,7 +33,7 @@ def checkLink(link, type):
 
 @bot.slash_command(name = "test", description = "uploads meow.txt")
 async def test(ctx):
-   await ctx.send(f"returned ```{str(exporter.upload())}```")
+   await ctx.send(f"returned ```{str(exporter.export('video', 'https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'mp4', True))}```")
 
 # @youtube.command(name = "video", description = "export youtube video")
 # async def video(
