@@ -24,6 +24,7 @@ class Exporter:
         return (os.stat(file).st_size / 1024) / 1024
     
     def upload(self, file):
+        print(f"uploading {file}")
         files = {
             'reqtype': (None, 'fileupload'),
             'time': (None, '1h'),
@@ -31,11 +32,12 @@ class Exporter:
         }
 
         response = requests.post('https://litterbox.catbox.moe/resources/internals/api.php', files=files)
-        if response.status_code == 200:
-            return response.content
-        else:
-            return -7
-    
+        return response.content
+        # if response.status_code != 200:
+        #   return response.content
+        # else:
+        #   return -7
+          
     def export(self, export_type, url, extension, upload = False):
         
         with yt_dlp.YoutubeDL() as ydl:
@@ -47,7 +49,7 @@ class Exporter:
 
                 opts = self.configure(vid, export_type, extension)
             except:
-                return -5
+                return -1
         
         with yt_dlp.YoutubeDL(opts) as ydl2:
             try:
@@ -56,12 +58,11 @@ class Exporter:
                     return -2
             except:
                 return -10
-            
+
+            # leave uploading to do in the bot side
             file = f"./exports/{vid}.{extension}"
-            if upload == True or self.get_filesize(file) > 20.0:
-                file = self.upload(file)
+            # if upload == True or self.get_filesize(file) > 20.0:
+            #     file = self.upload(file)
 
             return [vid, vti, vil, file]
-        
-        
-
+          
